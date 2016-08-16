@@ -1,4 +1,4 @@
-function transformCoords(base, coords) {
+function getData(rows, transformation) {
 
 }
 
@@ -17,4 +17,8 @@ function getPoint(minX, minY, maxX, maxY, w, h, coord) {
   return [rule(rangX, w, coord[0] - minX), rule(rangY, h, coord[1] - minY)];
 }
 
-export {getPoint};
+let Carto = {
+  getPoint: getPoint,
+};
+
+export { Carto };

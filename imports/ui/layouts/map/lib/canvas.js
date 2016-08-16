@@ -17,8 +17,8 @@ function drawPolygon(coordinates, ctx) {
   }
 
   ctx.stroke();
-  ctx.closePath();
   ctx.fill();
+  ctx.closePath();
 }
 
 let CV = function (canvas) {
