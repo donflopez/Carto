@@ -153,8 +153,8 @@ function getTilesFromArea( area, tiles, dim ) {
 
   // console.log( tiles );
 
-  for ( var i = topLeftTile[0]; i <= bottomRightTile[0]; i++ ) {
-    for ( var j = topLeftTile[1]; j <= bottomRightTile[1]; j++ ) {
+  for ( var i = topLeftTile[0] - 1; i <= bottomRightTile[0]; i++ ) {
+    for ( var j = topLeftTile[1] - 1; j <= bottomRightTile[1]; j++ ) {
       // console.log( 'hehehe', i, j, tiles[i][j] );
       if ( tiles[i][j] ) {
         subTiles.push( tiles[i][j] );
@@ -165,8 +165,42 @@ function getTilesFromArea( area, tiles, dim ) {
   return subTiles;
 }
 
+let initialArea, tileSet;
+
 function drawMap( tiles, area ) {
+
+  initialArea = area;
+  tileSet = tiles;
+
   let subTiles = getTilesFromArea( area, tiles, 0.001 );
+
+  for ( var i = 0; i < subTiles.length; i++ ) {
+    let tile = subTiles[i];
+    if ( tile ) {
+      for ( var j = 0; j < tile.length; j++ ) {
+        let polygon = tile[j];
+        // console.log( polygon );
+        // copy[j] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, polygon );
+        let copy = new Array( polygon.length );
+
+        for ( var k = 0; k < polygon.length; k++ ) {
+          let point = polygon[k];
+
+          copy[k] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, point );
+        }
+
+        cv.drawPolygon( copy );
+      }
+
+    }
+  }
+}
+
+function moveTo ( coords, zoom ) {
+  let area = getArea( zoom, coords ),
+      subTiles = getTilesFromArea( area, tileSet, 0.001 );
+
+  Map.cv.clean();
 
   for ( var i = 0; i < subTiles.length; i++ ) {
     let tile = subTiles[i];
@@ -197,7 +231,8 @@ var Map = {
   cv: null,
   getArea: getArea,
   filterPoints: filterPoints,
-  loadMapData: loadMapData
+  loadMapData: loadMapData,
+  moveTo: moveTo
 };
 
 function init( element ) {
