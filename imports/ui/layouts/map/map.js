@@ -6,22 +6,24 @@ import { Map } from './lib/map.js';
 import './map.html';
 import './map.scss';
 
-Template.map.onRendered(function () {
-  let canvasEl = this.$('#map')[0];
+Template.map.onRendered( function () {
+  let canvasEl = this.$( '#map' )[0];
   canvasEl.width = window.innerWidth;
   canvasEl.height = window.innerHeight;
-  map = Map.init(this.$('#map')[0]);
+  map = Map.init( this.$( '#map' )[0] );
 
-  HTTP.get('http://localhost:3000/cartodb-query.json', function (err, res) {
-    let area = map.getArea(500000000000, [-73.9802030753509, 40.78151131065725]);
-    console.log(area);
-    let data = map.filterPoints(area, JSON.parse(res.content).rows);
+  HTTP.get( 'http://localhost:3000/cartodb-query.json', function ( err, res ) {
+    let area = map.getArea( 40, [- 73.9822030753509, 40.78151131065725] );
+    console.log( area );
+    let tiles = map.loadMapData( JSON.parse( res.content ).rows );
 
-    map.drawMap(data, 1);
+    // console.log( data );
 
-    console.log(map);
+    map.drawMap( tiles, area );
+
+    console.log( map );
 
     // map.drawMap(data, 1);
-  });
+  } );
   // map.drawPolygon(polygon.coordinates);
-});
+} );
