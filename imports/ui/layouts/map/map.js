@@ -13,7 +13,7 @@ Template.map.onRendered( function () {
   map = Map.init( this.$( '#map' )[0] );
 
   HTTP.get( 'http://localhost:3000/cartodb-query.json', function ( err, res ) {
-    let area = map.getArea( 40, [- 73.9822030753509, 40.78151131065725] );
+    let area = map.getArea( 10, [- 73.9782030753509, 40.78151131065725] );
     console.log( area );
     let tiles = map.loadMapData( JSON.parse( res.content ).rows );
 

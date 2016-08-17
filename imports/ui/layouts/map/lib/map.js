@@ -20,8 +20,8 @@ function getTilePolygon( lim, dim, coords ) {
 
   for ( var i = 0; i < coords.length; i++ ) {
     let c = coords[i],
-        x = Math.ceil( ( c[0] - lim.min.x ) / dim ),
-        y = Math.ceil( ( c[1] - lim.min.y ) / dim );
+        x = parseInt( ( c[0] - lim.min.x ) / dim ),
+        y = parseInt( ( c[1] - lim.min.y ) / dim );
 
     cordHash[x + ':' + y] = true;
   }
@@ -68,7 +68,7 @@ function generateTiles( dim, coords ) {
         tileMap[x][y] = [];
       }
 
-      tileMap[x][y] = c;
+      tileMap[x][y].push( c );
     }
   }
 
@@ -156,36 +156,36 @@ function getTilesFromArea( area, tiles, dim ) {
   for ( var i = topLeftTile[0]; i <= bottomRightTile[0]; i++ ) {
     for ( var j = topLeftTile[1]; j <= bottomRightTile[1]; j++ ) {
       // console.log( 'hehehe', i, j, tiles[i][j] );
-      subTiles.push( tiles[i][j] );
+      if ( tiles[i][j] ) {
+        subTiles.push( tiles[i][j] );
+      }
     }
   }
-
-  console.log( subTiles );
 
   return subTiles;
 }
 
 function drawMap( tiles, area ) {
   let subTiles = getTilesFromArea( area, tiles, 0.001 );
-  console.log( area, subTiles );
+
   for ( var i = 0; i < subTiles.length; i++ ) {
     let tile = subTiles[i];
     if ( tile ) {
-      let copy = new Array( tile.length );
       for ( var j = 0; j < tile.length; j++ ) {
         let polygon = tile[j];
+        // console.log( polygon );
+        // copy[j] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, polygon );
+        let copy = new Array( polygon.length );
 
-        copy[j] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, polygon );
-        // for ( var k = 0; k < polygon.length; k++ ) {
-        //   let point = polygon[k];
-        //   console.log( polygon );
-        //   copy[j] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, point[j] );
-        // }
+        for ( var k = 0; k < polygon.length; k++ ) {
+          let point = polygon[k];
 
+          copy[k] = Carto.getPoint( area[0][0], area[0][1], area[1][0], area[1][1], window.innerWidth, window.innerHeight, point );
+        }
+
+        cv.drawPolygon( copy );
       }
 
-      console.log( copy );
-      cv.drawPolygon( copy );
     }
   }
 }
