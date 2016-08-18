@@ -62,3 +62,15 @@ function generateTilesFromPolygons( area, dim, coords ) {
 
   return tileMap;
 }
+
+let Tiles = {
+  get: {
+    inPolygon: getTilesInPolygon,
+    inCoords: getTileFromCoords,
+  },
+  generate: {
+    fromPolygons: generateTilesFromPolygons
+  }
+};
+
+export { Tiles };

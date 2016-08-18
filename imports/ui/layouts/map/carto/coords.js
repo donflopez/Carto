@@ -43,11 +43,15 @@ function getArea( scale, point ) {
 }
 
 let Coords = {
-  getAreaSize: getAreaSize,
-  getPoint: getPoint,
-  getData: getData,
-  isInArea: isInArea,
-  getArea: getArea
+
+  get: {
+    areaSize: getAreaSize,
+    point: getPoint,
+    data: getData,
+    area: getArea
+  },
+  isInArea: isInArea
+
 };
 
 export { Coords };
