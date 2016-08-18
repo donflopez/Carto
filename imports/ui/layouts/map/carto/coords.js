@@ -26,7 +26,7 @@ function rule( rang, size, val ) {
   return val * size / rang;
 }
 
-function getPoint( minX, minY, maxX, maxY, w, h, coord ) {
+function getRelativePoint( minX, minY, maxX, maxY, w, h, coord ) {
   let rangX = getRang( minX, maxX ),
       rangY = getRang( minY, maxY );
 
@@ -42,13 +42,48 @@ function getArea( scale, point ) {
           [point[0] + ( scale * SCALE ), point[1] + ( scale * SCALE )] ];
 }
 
+function calculateLimits( data, redo ) {
+
+  let minX = 1000, minY = 1000, maxX = - 1000, maxY = - 1000;
+
+  for ( var i = 0; i < data.length; i++ ) {
+    let polygon = data[i];
+
+    for ( var j = 0; j < polygon.length; j++ ) {
+      let c = polygon[j];
+
+      minX = c[0] < minX ? c[0] : minX;
+      minY = c[1] < minY ? c[1] : minY;
+
+      maxX = c[0] > maxX ? c[0] : maxX;
+      maxY = c[1] > maxY ? c[1] : maxY;
+    }
+  }
+
+  return { max: { x: maxX, y: maxY }, min: { x: minX, y: minY } };
+}
+
+function getPointsInPolygon( polygon, fn ) {
+  if ( !fn ) return polygon;
+
+  for ( var i = 0; i < polygon.length; i++ ) {
+    let point = polygon[i];
+
+    if ( fn ) {
+      fn( point );
+    }
+  }
+}
+
 let Coords = {
 
   get: {
     areaSize: getAreaSize,
-    point: getPoint,
+    relativePoint: getRelativePoint,
     data: getData,
-    area: getArea
+    area: getArea,
+    limits: calculateLimits,
+    pointsInPolygon: getPointsInPolygon
   },
   isInArea: isInArea
 

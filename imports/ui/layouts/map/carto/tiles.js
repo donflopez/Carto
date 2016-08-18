@@ -63,10 +63,52 @@ function generateTilesFromPolygons( area, dim, coords ) {
   return tileMap;
 }
 
+function getTilesFromArea( area, ref, tiles, dim, fn ) {
+  let topLeftTile = getTileFromCoords( ref, dim, area[0] ),
+      bottomRightTile = getTileFromCoords( ref, dim, area[1] ),
+      subTiles = [];
+
+  for ( var i = topLeftTile[0] - 1; i <= bottomRightTile[0]; i++ ) {
+    for ( var j = topLeftTile[1] - 1; j <= bottomRightTile[1]; j++ ) {
+      if ( tiles[i][j] ) {
+        if ( fn ) {
+          fn( tiles[i][j] );
+        }
+        else {
+          subTiles.push( tiles[i][j] );
+        }
+      }
+    }
+  }
+
+  return subTiles;
+}
+
+function getPolygonsFromTile( tile, fn ) {
+  let copy = [];
+
+  for ( var i = 0; i < tile.length; i++ ) {
+    let polygon = tile[i];
+
+    if ( fn ) {
+      fn( polygon );
+    }
+    else {
+      copy.push( _.clone( polygon ) );
+    }
+  }
+
+  return fn ? copy : tile;
+}
+
+
+
 let Tiles = {
   get: {
     inPolygon: getTilesInPolygon,
     inCoords: getTileFromCoords,
+    inArea: getTilesFromArea,
+    polygonsInTile: getPolygonsFromTile,
   },
   generate: {
     fromPolygons: generateTilesFromPolygons
