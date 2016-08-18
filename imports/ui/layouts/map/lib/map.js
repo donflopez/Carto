@@ -151,11 +151,8 @@ function getTilesFromArea( area, tiles, dim ) {
       bottomRightTile = getTile( lim, dim, area[1] ),
       subTiles = [];
 
-  // console.log( tiles );
-
   for ( var i = topLeftTile[0] - 1; i <= bottomRightTile[0]; i++ ) {
     for ( var j = topLeftTile[1] - 1; j <= bottomRightTile[1]; j++ ) {
-      // console.log( 'hehehe', i, j, tiles[i][j] );
       if ( tiles[i][j] ) {
         subTiles.push( tiles[i][j] );
       }
