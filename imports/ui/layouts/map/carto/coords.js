@@ -2,7 +2,7 @@ const SCALE = 0.0005;
 const X = 0;
 const Y = 1;
 
-function getData( geom ) {
+function getPolygons( geom ) {
   let coords = new Array( geom.length );
 
   for ( var i = 0; i < geom.length; i++ ) {
@@ -80,7 +80,7 @@ let Coords = {
   get: {
     areaSize: getAreaSize,
     relativePoint: getRelativePoint,
-    data: getData,
+    polygons: getPolygons,
     area: getArea,
     limits: calculateLimits,
     pointsInPolygon: getPointsInPolygon

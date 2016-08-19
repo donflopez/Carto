@@ -32,14 +32,14 @@ function getTileFromCoords( ref, side, coords ) {
 
 function generateTilesFromPolygons( area, dim, coords ) {
   dim *= 2;
-  let size = Coords.getAreaSize( area ),
-      nHTiles = parseInt( size.w / dim ),
-      nVTiles = parseInt( size.h / dim ),
+  let size = Coords.get.areaSize( area ),
+      nHTiles = Math.abs( parseInt( size.w / dim ) ),
+      nVTiles = Math.abs( parseInt( size.h / dim ) ),
       tileMap = new Array( nHTiles );
 
   for ( var i = 0; i < coords.length; i++ ) {
     let c = coords[i],
-        tiles = getTilesInPolygon( lim, dim, c );
+        tiles = getTilesInPolygon( area[0], dim, c );
 
     for ( var j = 0; j < tiles.length; j++ ) {
       let x = tiles[j][X],
@@ -50,7 +50,8 @@ function generateTilesFromPolygons( area, dim, coords ) {
         tileMap[x] = new Array( nVTiles );
 
       }
-      else if ( !tileMap[x][y] ) {
+
+      if ( !tileMap[x][y] ) {
 
         tileMap[x][y] = [];
 
