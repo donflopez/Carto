@@ -48,14 +48,17 @@ let Map = function ( canvas, data ) {
 
     Tiles.get.inArea( area, [_limits.min.x, _limits.min.y], _tiles, AREA_SIZE,
       tile => {
+
         Tiles.get.polygonsInTile( tile, polygon => {
+          let clone = new Array( polygon.length );
+
           for ( var i = 0; i < polygon.length; i++ ) {
             let point = polygon[i];
 
-            polygon[i] = Coords.get.relativePoint( area[0][0], area[0][1], area[1][0], area[1][1], screenSize.w, screenSize.h, point );
+            clone[i] = Coords.get.relativePoint( area[0][0], area[0][1], area[1][0], area[1][1], screenSize.w, screenSize.h, point );
           }
 
-          drawPolygon( polygon, ctx );
+          drawPolygon( clone, ctx );
         } );
       }
     );

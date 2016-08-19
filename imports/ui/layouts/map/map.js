@@ -13,20 +13,38 @@ Template.map.onRendered( function () {
   // map = Map.init( this.$( '#map' )[0] );
 
   HTTP.get( 'http://localhost:3000/cartodb-query.json', function ( err, res ) {
-    let map = Map( this.$( '#map' )[0], JSON.parse( res.content ).rows );
+    const MOVE_DIST = 0.0001;
+    const SCALE = 0.1;
+    let map = Map( canvasEl, JSON.parse( res.content ).rows );
+    let coords = [- 73.976030753509, 40.78151131065725],
+        scale = 10;
 
-    map.moveTo( [- 73.976030753509, 40.78151131065725], 10 );
-    // tiles = map.loadMapData( JSON.parse( res.content ).rows );
-    //
-    // let area = map.getArea( 30, [- 73.976030753509, 40.78151131065725] );
-    //
-    // // console.log( data );
-    //
-    // map.drawMap( tiles, area );
-    //
-    // console.log( map );
+    map.moveTo( coords, scale );
 
-    // map.drawMap(data, 1);
+    document.addEventListener( 'keydown', e => {
+      switch ( e.keyCode ) {
+        case 37: //left
+          coords[0] -= MOVE_DIST;
+          break;
+        case 38:
+          coords[1] -= MOVE_DIST;
+          break;
+        case 39:
+          coords[0] += MOVE_DIST;
+          break;
+        case 40:
+          coords[1] += MOVE_DIST;
+          break;
+        case 73:
+          scale -= SCALE;
+          break;
+        case 79:
+          scale += SCALE;
+          break;
+      }
+
+      map.moveTo( coords, scale );
+    } );
   } );
   // map.drawPolygon(polygon.coordinates);
 } );

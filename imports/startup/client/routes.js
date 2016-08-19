@@ -8,15 +8,15 @@ import '/imports/ui/layouts/landing/landing.js';
 import '/imports/ui/layouts/map/map.js';
 
 function render() {
-  BlazeLayout.render(this.name);
+  BlazeLayout.render( this.name );
 }
 
-FlowRouter.route('/landing', {
+FlowRouter.route( '/landing', {
   name: 'landing',
   action: render,
-});
+} );
 
-FlowRouter.route('/map', {
+FlowRouter.route( '/', {
   name: 'map',
   action: render,
-});
+} );
