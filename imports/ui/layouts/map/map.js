@@ -42,8 +42,9 @@ Template.map.onRendered( function () {
           scale += SCALE;
           break;
       }
-
-      map.moveTo( coords, scale );
+      requestAnimationFrame( function () {
+        map.moveTo( coords, scale );
+      } );
     } );
   } );
   // map.drawPolygon(polygon.coordinates);
