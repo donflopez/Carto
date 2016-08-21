@@ -249,6 +249,7 @@ function start( data ) {
     }
     //
     var lim = calculateLimits( rows );
+    let polygons = [];
 
     for ( var i = 0; i < rows.length; i++ ) {
       let polygon = rows[i],
@@ -265,17 +266,23 @@ function start( data ) {
         poly.push( point );
       }
 
+      polygons.push( poly );
 
-      let buffer = initBuffers( poly );
-      mapBuffers.push( buffer );
-      if ( i === 0 ) {
-        drawScene( buffer );
-      }
-      else {
-        simpleDraw( buffer );
-      }
+      // let buffer = initBuffers( poly );
+      // mapBuffers.push( buffer );
+      // if ( i === 0 ) {
+      //   drawScene( buffer );
+      // }
+      // else {
+      //   simpleDraw( buffer );
+      // }
     }
 
+    let buffer = initLongBuffer( polygons );
+
+    drawScene( buffer );
+
+    mapBuffers.push( buffer );
     // Set up to draw the scene periodically.
 
     // setInterval( drawScene, 15 );
@@ -298,7 +305,7 @@ function start( data ) {
   }
 }
 
-zoom = function ( scale ) {
+zoom = function ( scale, x, y ) {
   perspectiveMatrix = makePerspective( scale, window.innerWidth / window.innerHeight, 0.02, 100.0 );
 
   // Set the drawing position to the "identity" point, which is
@@ -309,11 +316,11 @@ zoom = function ( scale ) {
   // Now move the drawing position a bit to where we want to start
   // drawing the square.
 
-  mvTranslate( [- 0.0, 0.0, - 3.0] );
+  mvTranslate( [x || - 0.0, y || 0.0, - 1.0] );
 
   for ( var i = 0; i < mapBuffers.length; i++ ) {
     if ( i === 0 ) {
-      drawScene( mapBuffers[i], scale );
+      drawScene( mapBuffers[i], scale, x, y );
     }
     else {
       simpleDraw( mapBuffers[i] );
@@ -361,6 +368,71 @@ function calculateLimits( data, redo ) {
   }
 
   return { max: { x: maxX, y: maxY }, min: { x: minX, y: minY } };
+}
+
+function initLongBuffer( polygons ) {
+
+  // Create a buffer for the square's vertices.
+  let squareVerticesBuffer = gl.createBuffer();
+
+  // Select the squareVerticesBuffer as the one to apply vertex
+  // operations to from here out.
+
+  gl.bindBuffer( gl.ARRAY_BUFFER, squareVerticesBuffer );
+
+  // Now create an array of vertices for the square. Note that the Z
+  // coordinate is always 0 here.
+  var vertices = [];
+  for ( var j = 0; j < polygons.length; j++ ) {
+    let polygon = polygons[j],
+        pLen = polygon.length,
+        lines = [];
+
+    for ( var i = 0; i < pLen; i++ ) {
+      let point = polygon[i];
+
+      point.push( 0.0 );
+
+      // vertices.push( point );
+
+      lines.push( point );
+      if ( i >= 1 ) {
+        lines.push( point );
+        // vertices.push( vertices[vertices.length - 1] );
+      }
+
+      if ( i + 1 === pLen ) {
+        lines.push( lines[0] );
+      }
+      // vertices = vertices.concat( point );
+    }
+
+    // vertices = vertices.concat( [vertices[0]] );
+    // if ( polygon.length % 2 === 0 ) {
+    //   vertices.push( [0.0, 0.0, 0.0] );
+    // }
+    //
+    //
+    //
+    for ( var i = 0; i < lines.length; i++ ) {
+      vertices.push( lines[i] );
+    }
+    // vertices = vertices.concat( lines );
+  }
+
+
+  squareVerticesBuffer.itemSize = 3;
+  numPoints = squareVerticesBuffer.numItems = vertices.length;
+
+  vertices = _.flatten( vertices );
+
+  // Now pass the list of vertices into WebGL to build the shape. We
+  // do this by creating a Float32Array from the JavaScript array,
+  // then use it to fill the current vertex buffer.
+
+  gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+  return squareVerticesBuffer;
 }
 
 //
@@ -417,7 +489,7 @@ function initBuffers( polygon ) {
 //
 // Draw the scene.
 //
-function drawScene( buffer, scale ) {
+function drawScene( buffer, scale, x, y ) {
   // Clear the canvas before we start drawing on it.
   // gl.viewport( 0, 0, gl.viewportWidth, gl.viewportHeight );
 
@@ -438,7 +510,7 @@ function drawScene( buffer, scale ) {
   // Now move the drawing position a bit to where we want to start
   // drawing the square.
 
-  mvTranslate( [- 0.0, 0.0, - 3.0] );
+  mvTranslate( [ x || - 0.0, y || 0.0, - 3.0] );
 
   // Draw the square by binding the array buffer to the square's vertices
   // array, setting attributes, and pushing it to GL.
