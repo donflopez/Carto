@@ -12,17 +12,17 @@ function render() {
   BlazeLayout.render( this.name );
 }
 
-FlowRouter.route( '/landing', {
+FlowRouter.route( '/', {
   name: 'landing',
   action: render,
 } );
 
-FlowRouter.route( '/', {
+FlowRouter.route( '/canvas', {
   name: 'map',
   action: render,
 } );
 
-FlowRouter.route( '/gl', {
+FlowRouter.route( '/webgl', {
   name: 'mapgl',
   action: render,
 } );

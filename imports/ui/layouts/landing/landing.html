@@ -1,6 +1,6 @@
 <template name="landing">
   <div id="landing">
-    <h1 class="title">Meteor Start</h1>
+    <h1 class="title">Carto</h1>
     {{> canvas}}
   </div>
 </template>
@@ -9,4 +9,28 @@
   <canvas id="landing-canvas">
 
   </canvas>
+  <div class="row" style="margin-top: 20px;">
+    <div class="col s6">
+      <div style="margin: 0 auto; width: 81px;">
+        <a class="waves-effect waves-light btn-large z-depth-1 amber lighten-1" href="/canvas">Canvas</a>
+      </div>
+    </div>
+
+    <div class="col s6">
+      <div style="margin: 0 auto; width: 81px;">
+        <a class="waves-effect waves-light btn-large z-depth-1 light-green darken-2" href="/webgl">WebGL</a>
+      </div>
+    </div>
+
+    <div class="col s12">
+      <div style="padding: 30px;">
+        <div class="card blue-grey red lighten-5">
+          <div class="card-content">
+            <p>Use the keys [I] and [O] to make zoom in and zoom out.</p>
+            <p>Use the arrow keys to move in the map.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
