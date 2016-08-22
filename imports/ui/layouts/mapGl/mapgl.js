@@ -2,7 +2,6 @@ import { Template } from 'meteor/templating';
 import { HTTP } from 'meteor/http';
 
 import { Map } from './lib/map.js';
-import {start} from './lib/wgl.js';
 
 import './mapgl.html';
 import './mapgl.scss';

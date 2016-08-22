@@ -12,11 +12,10 @@ function drawScene( gl, shader, buffer, scale, x, y ) {
       mvMatrix = Matrix.loadIdentity();
 
   mvMatrix = Matrix.mvTranslate( mvMatrix, [x || - 0.0, y || 0.0, scale || - 1.0] );
-  console.log( mvMatrix );
+
   gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
   gl.vertexAttribPointer( shader.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0 );
 
-  console.log( perspectiveMatrix );
   Matrix.setMatrixUniforms( gl, shader.program, perspectiveMatrix, mvMatrix );
 
   gl.lineWidth( 1.0 );
@@ -52,7 +51,7 @@ let WebGl = function ( canvas ) {
     // vertices and so forth is established.
 
     shader = Shaders.init( gl );
-    console.log( shader );
+
     this.loadData = function ( vertices ) {
       bufferData = initBuffer( gl, vertices );
       // console.log( bufferData.numItems );

@@ -82,7 +82,7 @@ let Map = function ( canvas, data ) {
         scale *= SCALE;
       break;
     }
-    console.log( scale );
+    
     gl.goTo( scale, coords[0], coords[1] );
   } );
 
