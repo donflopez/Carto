@@ -1,7 +1,9 @@
 # Carto
 
 ***
-Load a geojson data from Carto API and draw it into a canvas.
+Load a geojson data from Carto API and draw it into a canvas and WebGL.
+
+You can look in the `/imports/ui/layouts/map` for the canvas implementation and in `/imports/ui/layouts/mapGl` for the WebGL implementation.
 
 ## Launching
 
