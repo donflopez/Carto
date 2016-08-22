@@ -1,6 +1,6 @@
 import { WebGl } from './webGl.js';
 
-import { Coords } from '../../map/carto/coords.js';
+import { Coords } from './coords.js';
 
 function polygonToLines( polygon, lim ) {
   let lines = [],
@@ -82,7 +82,7 @@ let Map = function ( canvas, data ) {
         scale *= SCALE;
       break;
     }
-    
+
     gl.goTo( scale, coords[0], coords[1] );
   } );
 
