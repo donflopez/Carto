@@ -278,7 +278,7 @@ function start( data ) {
       // }
     }
 
-    let buffer = initLongBuffer( polygons );
+    buffer = initLongBuffer( polygons );
 
     drawScene( buffer );
 
@@ -429,7 +429,7 @@ function initLongBuffer( polygons ) {
   // Now pass the list of vertices into WebGL to build the shape. We
   // do this by creating a Float32Array from the JavaScript array,
   // then use it to fill the current vertex buffer.
-
+  console.log( vertices.length );
   gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
 
   return squareVerticesBuffer;
@@ -478,7 +478,6 @@ function initBuffers( polygon ) {
   // Now pass the list of vertices into WebGL to build the shape. We
   // do this by creating a Float32Array from the JavaScript array,
   // then use it to fill the current vertex buffer.
-
   gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
 
   return squareVerticesBuffer;
@@ -514,11 +513,12 @@ function drawScene( buffer, scale, x, y ) {
 
   // Draw the square by binding the array buffer to the square's vertices
   // array, setting attributes, and pushing it to GL.
-
+  console.log( vertexPositionAttribute );
   gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
   gl.vertexAttribPointer( vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0 );
   setMatrixUniforms();
   gl.lineWidth( 1.0 );
+  console.log( perspectiveMatrix );
   gl.drawArrays( gl.LINES, 0, buffer.numItems );
 }
 

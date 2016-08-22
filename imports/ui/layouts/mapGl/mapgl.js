@@ -1,7 +1,8 @@
 import { Template } from 'meteor/templating';
 import { HTTP } from 'meteor/http';
 
-import { start } from './lib/wgl.js';
+import { Map } from './lib/map.js';
+import {start} from './lib/wgl.js';
 
 import './mapgl.html';
 import './mapgl.scss';
@@ -13,7 +14,9 @@ Template.mapgl.onRendered( function () {
   canvasEl.height = window.innerHeight;
 
   HTTP.get( 'http://localhost:3000/cartodb-query.json', function ( err, res ) {
-    start( JSON.parse( res.content ).rows );
+    // start( JSON.parse( res.content ).rows );
+    myMap = Map( canvasEl, JSON.parse( res.content ).rows );
+    //
   } );
 
 } );
